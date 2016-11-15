@@ -40,6 +40,7 @@ import com.example.android.sunshine.app.muzei.WeatherMuzeiSource;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.wearable.Asset;
 import com.google.android.gms.wearable.DataApi;
 import com.google.android.gms.wearable.PutDataMapRequest;
 import com.google.android.gms.wearable.PutDataRequest;
@@ -50,6 +51,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -97,11 +99,15 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter  implements
     }
 
     private void sendDataToWatch() {
+       /* int iconId = Utility.getIconResourceForWeatherCondition((int) weatherId);
+        Bitmap bitmap=BitmapFactory.decodeResource(getContext().getResources(),iconId);
+        Asset asset=toAsset(bitmap);*/
         PutDataMapRequest putDataMapRequest = PutDataMapRequest.create("/wearable_data");
         putDataMapRequest.getDataMap().putLong("weatherId",weatherId);
         putDataMapRequest.getDataMap().putLong("timestamp",timestamp);
         putDataMapRequest.getDataMap().putDouble("maxTemp",maxTemp);
         putDataMapRequest.getDataMap().putDouble("minTemp",minTemp);
+    //    putDataMapRequest.getDataMap().putAsset("weatherImage",asset);
         Log.e(LOG_TAG, "sendDataToWatch: weatherId "+weatherId);
         Log.e(LOG_TAG, "sendDataToWatch: maxTemp "+maxTemp );
         Log.e(LOG_TAG, "sendDataToWatch: minTemp "+minTemp );
@@ -117,6 +123,23 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter  implements
                     Log.e(LOG_TAG, "onResult: "+"Failed" );
             }
         });
+    }
+
+    private Asset toAsset(Bitmap bitmap) {
+        ByteArrayOutputStream byteStream = null;
+        try {
+            byteStream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteStream);
+            return Asset.createFromBytes(byteStream.toByteArray());
+        } finally {
+            if (null != byteStream) {
+                try {
+                    byteStream.close();
+                } catch (IOException e) {
+                    // ignore
+                }
+            }
+        }
     }
 
     @Override
