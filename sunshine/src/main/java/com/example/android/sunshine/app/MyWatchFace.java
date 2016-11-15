@@ -117,13 +117,17 @@ public class MyWatchFace extends CanvasWatchFaceService {
         float mXOffset;
         float mYOffset;
 
-        private GoogleApiClient mGoogleApiClient;
-
         /**
          * Whether the display supports fewer bits for each color in ambient mode. When true, we
          * disable anti-aliasing in ambient mode.
          */
         boolean mLowBitAmbient;
+        GoogleApiClient mGoogleApiClient=new GoogleApiClient.Builder(MyWatchFace.this)
+                .addApi(Wearable.API)
+        .addConnectionCallbacks(this)
+        .addOnConnectionFailedListener(this)
+        .build();
+
 
         @Override
         public void onCreate(SurfaceHolder holder) {
@@ -145,12 +149,7 @@ public class MyWatchFace extends CanvasWatchFaceService {
             mTextPaint = createTextPaint(resources.getColor(R.color.digital_text));
 
             mCalendar = Calendar.getInstance();
-            mGoogleApiClient=new GoogleApiClient.Builder(MyWatchFace.this)
-                    .addApi(Wearable.API)
-                    .addConnectionCallbacks(this)
-                    .addOnConnectionFailedListener(this)
-                    .build();
-            mGoogleApiClient.connect();
+
         }
 
         @Override
@@ -172,13 +171,17 @@ public class MyWatchFace extends CanvasWatchFaceService {
             super.onVisibilityChanged(visible);
 
             if (visible) {
+                mGoogleApiClient.connect();
                 registerReceiver();
-
                 // Update time zone in case it changed while we weren't visible.
                 mCalendar.setTimeZone(TimeZone.getDefault());
                 invalidate();
             } else {
                 unregisterReceiver();
+                if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
+                    Wearable.DataApi.removeListener(mGoogleApiClient, this);
+                    mGoogleApiClient.disconnect();
+                }
             }
 
             // Whether the timer should be running depends on whether we're visible (as well as
@@ -288,6 +291,7 @@ public class MyWatchFace extends CanvasWatchFaceService {
                     : String.format("%d:%02d:%02d", mCalendar.get(Calendar.HOUR),
                     mCalendar.get(Calendar.MINUTE), mCalendar.get(Calendar.SECOND));
             canvas.drawText(text, mXOffset, mYOffset, mTextPaint);
+           // Log.e(TAG, "onDraw: " );
         }
 
         /**
@@ -323,23 +327,24 @@ public class MyWatchFace extends CanvasWatchFaceService {
         }
 
         @Override
-        public void onConnected(@Nullable Bundle bundle) {
-
+        public void onConnected( Bundle bundle) {
+            Log.e(TAG, "onConnected: " );
+            Wearable.DataApi.addListener(mGoogleApiClient,Engine.this);
         }
 
         @Override
         public void onConnectionSuspended(int i) {
-
+            Log.e(TAG, "onConnectionSuspended: " );
         }
 
         @Override
-        public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
+        public void onConnectionFailed( ConnectionResult connectionResult) {
+            Log.e(TAG, "onConnectionFailed: " );
         }
 
         @Override
         public void onDataChanged(DataEventBuffer dataEventBuffer) {
-            if (!mGoogleApiClient.isConnected() || !mGoogleApiClient.isConnecting()) {
+          /*  if (!mGoogleApiClient.isConnected() || !mGoogleApiClient.isConnecting()) {
                 ConnectionResult connectionResult = mGoogleApiClient
                         .blockingConnect(30, TimeUnit.SECONDS);
                 if (!connectionResult.isSuccess()) {
@@ -347,8 +352,8 @@ public class MyWatchFace extends CanvasWatchFaceService {
                             + "error code: " + connectionResult.getErrorCode());
                     return;
                 }
-            }
-
+            }*/
+            Log.e(TAG, "onDataChanged: " );
             DataMap dataMap;
             for(DataEvent dataEvent:dataEventBuffer)
             {
