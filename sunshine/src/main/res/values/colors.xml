@@ -2,4 +2,10 @@
 <resources>
     <color name="background">#000000</color>
     <color name="digital_text">#ffffff</color>
+    <color name="white">#FFFFFF</color>
+    <color name="grey">#cccccc</color>
+    <color name="grey_700">#646464</color>
+    <color name="black">#000000</color>
+    <color name="lightBlue">#87CEFA</color>
+    <color name="dullWhite">#e7ebe7</color>
 </resources>

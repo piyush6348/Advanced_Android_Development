@@ -99,15 +99,16 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter  implements
     }
 
     private void sendDataToWatch() {
-       /* int iconId = Utility.getIconResourceForWeatherCondition((int) weatherId);
+        int iconId = Utility.getIconResourceForWeatherCondition((int) weatherId);
         Bitmap bitmap=BitmapFactory.decodeResource(getContext().getResources(),iconId);
-        Asset asset=toAsset(bitmap);*/
+        Asset asset=toAsset(bitmap);
+
         PutDataMapRequest putDataMapRequest = PutDataMapRequest.create("/wearable_data");
         putDataMapRequest.getDataMap().putLong("weatherId",weatherId);
-        putDataMapRequest.getDataMap().putLong("timestamp",timestamp);
+        putDataMapRequest.getDataMap().putLong("timestamp",System.currentTimeMillis());
         putDataMapRequest.getDataMap().putDouble("maxTemp",maxTemp);
         putDataMapRequest.getDataMap().putDouble("minTemp",minTemp);
-    //    putDataMapRequest.getDataMap().putAsset("weatherImage",asset);
+      //  putDataMapRequest.getDataMap().putAsset("weatherImage",asset);
         Log.e(LOG_TAG, "sendDataToWatch: weatherId "+weatherId);
         Log.e(LOG_TAG, "sendDataToWatch: maxTemp "+maxTemp );
         Log.e(LOG_TAG, "sendDataToWatch: minTemp "+minTemp );
