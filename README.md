@@ -1,38 +1,31 @@
-Advanced Android Sample App
-===================================
+# Go Ubiquitous
 
-Synchronizes weather information from OpenWeatherMap on Android Phones and Tablets. Used in the Udacity Advanced Android course.
+Project to build a wearable watch face for Sunshine to run on an Android Wear device.
 
-Pre-requisites
---------------
-Android SDK 21 or Higher
-Build Tools version 21.1.2
-Android Support AppCompat 22.2.0
-Android Support Annotations 22.2.0
-Android Support GridLayout 22.2.0
-Android Support CardView 22.2.0
-Android Support Design 22.2.0
-Android Support RecyclerView 22.2.0
-Google Play Services GCM 7.0.0
-BumpTech Glide 3.5.2
+The goals of the project are to:
 
+- Understand the fundamentals of Android Wear.
+- Design for multiple watch form factors.
+- Communicate between a mobile device and a wearable device.
 
-Getting Started
----------------
-This sample uses the Gradle build system.  To build this project, use the
-"gradlew build" command or use "Import Project" in Android Studio.
+**Project is presently under development**
 
-Support
--------
+## Background
 
-- Google+ Community: https://plus.google.com/communities/105153134372062985968
-- Stack Overflow: http://stackoverflow.com/questions/tagged/android
+Sunshine is an Android app used in the Udacity Advanced Android course. The app synchronizes weather information from OpenWeatherMap on Android Phones and Tablets.
 
-Patches are encouraged, and may be submitted by forking this project and
-submitting a pull request through GitHub. Please see CONTRIBUTING.md for more details.
+[https://github.com/udacity/Advanced_Android_Development](https://github.com/udacity/Advanced_Android_Development "Advanced Android Development")
 
-License
--------
+## Project Rubric
+
+- App conforms to common standards found in the Android Nanodegree General Project Guidelines
+- App works on both round and square face watches **implemented**
+- App displays the current time **under development**
+- App displays the high and low temperatures **under development**
+- App displays a graphic that summarizes the day’s weather (e.g., a sunny image, rainy image, cloudy image, etc.) **under development**
+
+## License
+
 Copyright 2015 The Android Open Source Project, Inc.
 
 Licensed to the Apache Software Foundation (ASF) under one or more contributor
